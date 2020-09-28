@@ -10,6 +10,10 @@ export interface MatchState {
     cardsInPlay: GameEntity<BaseCard>[];
 }
 
+export interface MatchConfig {
+  roundTime: number;
+}
+
 
 enum CardType {
   UNIT, SPELL
@@ -60,18 +64,34 @@ interface UnitCardStats {
 }
 //#endregion
 
-export enum PlayerCommand {
-  ATTACK,
+// export enum PlayerCommandType {
+//   ATTACK,
+//   MOVE_CARD,
+//   NEW_CARD,
+//   NONE
+// }
+
+export enum PlayerCommandType {
+  PLACE_UNIT,
+  CAST_SPELL,
   NONE
 }
 
+export type PlayerCommand = PlayerAttackCommand|PlayerMoveCommand;
+
 export interface PlayerAttackCommand {
-  type:     PlayerCommand.ATTACK;
+  type:     PlayerCommandType.ATTACK;
   cardId:   string;
   targetId: string;
 }
 
-interface PlayerState {
+export interface PlayerMoveCommand {
+  type:        PlayerCommandType.MOVE_CARD,
+  cardId:      string;
+  newPosition: Point;
+}
+
+export interface PlayerState {
     id: string;
     name: string;
     mana: number;
