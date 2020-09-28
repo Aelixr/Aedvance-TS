@@ -4,26 +4,25 @@ export type PlayerInputStream = Observable<[id: string, input: PlayerCommand]>;
 
 //#region Card Stuff
 export interface MatchState {
-    tick: number;
-    round: number;
-    worldSize: Point;
-    cardsInPlay: GameEntity<BaseCard>[];
+  players: PlayerState[];
+  cardsInPlay: GameEntity<BaseCard>[];
+  tick: number;
+  round: number;
+  worldSize: Point;
 }
 
 export interface MatchConfig {
   roundTime: number;
 }
 
-
 enum CardType {
   UNIT, SPELL
 }
 
 interface BaseCard {
-    type: CardType
-    name: string;
-    cost: number;
-    // hp:   number;
+  type: CardType
+  name: string;
+  cost: number;
 }
 
 enum EffectType {
@@ -31,22 +30,9 @@ enum EffectType {
   DAMAGE
 }
 
-interface Action {
-  fromCardId: string;
-  targetCardId: string[];
-  effects: EffectType;
-}
-
-interface DamageEffect extends Action {
-  type:   EffectType.DAMAGE;
-  amount: number;
-}
-
 export interface SpellCard extends BaseCard {
-    type: CardType.SPELL;
-    // action: VFunction
-    // effect: //virtual function
-    effects: Array<EffectType | [turns: number, type: EffectType]>
+  type: CardType.SPELL;
+  effects: Array<EffectType | [turns: number, type: EffectType]>
 }
 
 export interface UnitCard extends BaseCard {
@@ -63,13 +49,6 @@ interface UnitCardStats {
     moveDelay: number;
 }
 //#endregion
-
-// export enum PlayerCommandType {
-//   ATTACK,
-//   MOVE_CARD,
-//   NEW_CARD,
-//   NONE
-// }
 
 export enum PlayerCommandType {
   PLACE_UNIT,
@@ -99,15 +78,8 @@ export interface PlayerState {
     deck: BaseCard[];
 }
 
-
-interface Properties {
-  wind: number;
-  fire: number;
-}
-
-type Point = [x: number, y: number];
-
-type GameEntity<T> = T & { position: Point, id: string, owner: string }
+export type Point = [x: number, y: number];
+export type GameEntity<T> = T & { position: Point, id: string, ownerId: string }
 
 // interface Thing {
 //   effect: "hp = hp - 1" // over here
